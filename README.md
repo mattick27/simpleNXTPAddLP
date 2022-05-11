@@ -1,4 +1,6 @@
 # simpleNXTPAddLP v0.1
+main :v0.2 : Support goerli and kovan <br/>
+dev :v0.3 : Add approve and mint test token <br/>
 
 # Prerequisite
 You must approve tokens for the Connext.sol contract address<br/>
