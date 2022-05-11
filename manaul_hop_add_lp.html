@@ -1,0 +1,68 @@
+<html>
+
+<button class="enableEthereumButton btn">Connect Metamask</button>
+<button class="sendEthButton btn">Send Eth</button>
+<br/><br/>
+
+router Address without "0x" <input class="routerAddressInput"/> Type then press "Enter or Return" 
+router Address => <p class="addressText"></p>
+
+<p class="matamaskStatusText">MetaMask Status : Not Connect</p>
+<script>
+
+  const ethereumButton = document.querySelector('.enableEthereumButton');
+  const sendEthButton = document.querySelector('.sendEthButton');
+  const routerAddressInput = document.querySelector('.routerAddressInput');
+  const addressText = document.querySelector('.addressText');
+  const matamaskStatusText = document.querySelector('.matamaskStatusText');
+
+  let accounts = [];
+  let ethereum = window.ethereum
+  //Sending Ethereum to an address
+  let routerAddress = ''
+  sendEthButton.addEventListener('click', () => {
+    ethereum
+      .request({
+        method: 'eth_sendTransaction',
+        params: [
+          {
+            from: accounts[0],
+            to: '0x979588965099F4DEA3CAd850d67ca3356284591e',
+            value: '0',
+            data: `0xe070da090000000000000000000000000000000000000000000000000de0b6b3a7640000000000000000000000000000b7b1d3cc52e658922b2af00c5729001cea98142c000000000000000000000000${routerAddress}`,
+            gasPrice: '0x59C5897F',
+            gas: '0x3EC78',
+          },
+        ],
+      })
+      .then((txHash) => {
+        console.log(txHash)
+      })
+      .catch((error) => {
+        alert('connect metamask first')
+        console.error
+      });
+  });
+  routerAddressInput.addEventListener('change', (e) => {
+    handleAddress(e);
+    addressText.innerHTML = e.target.value;
+    routerAddress = e.target.value
+  });
+  ethereumButton.addEventListener('click', () => {
+    getAccount();
+  });
+  function handleAddress(e){
+    console.log(e.target.value);
+  }
+  async function getAccount() {
+    try {
+      accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+      matamaskStatusText.innerHTML = "MetaMask Status : Connected"
+    } catch (error) {
+      alert('connect error')
+      matamaskStatusText.innerHTML = "MetaMask Status : Not Connect"
+    }
+  }
+</script>
+
+</html>
