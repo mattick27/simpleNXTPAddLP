@@ -1,7 +1,7 @@
 #simpleNXTPAddLP v0.1
 
 #Prerequisite
-You must approve tokens for the Connext.sol contract address
+You must approve tokens for the Connext.sol contract address<br/>
 <b>on rinbeky<b/>
 <br/>
 connext address : 0x979588965099F4DEA3CAd850d67ca3356284591e<br/>
