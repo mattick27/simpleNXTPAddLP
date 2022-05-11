@@ -1,4 +1,4 @@
-# simpleNXTPAddLP v0.1
+# simpleNXTPAddLP v0.2
 
 # Prerequisite
 You must approve tokens for the Connext.sol contract address<br/>
