@@ -1,7 +1,7 @@
 <html>
-
-<button class="enableEthereumButton btn">Connect Metamask</button>
-<button class="sendEthButton btn">Send Eth</button>
+<button class="approveTokenButton">Approve Test Token</button>
+<button class="mintTokenButton">Mint Test Token</button>
+<button class="addLPButton btn">Add LP</button>
 <br /><br />
 
 router Address without "0x" <input class="routerAddressInput" /> Type then press "Enter or Return"
@@ -17,12 +17,14 @@ router Address => <p class="addressText"></p>
 <p class="matamaskStatusText">MetaMask Status : Not Connect</p>
 <script>
 
-  const ethereumButton = document.querySelector('.enableEthereumButton');
-  const sendEthButton = document.querySelector('.sendEthButton');
+  const mintTokenButton = document.querySelector('.mintTokenButton');
+  const approveTokenButton = document.querySelector('.approveTokenButton');
+  const addLPButton = document.querySelector('.addLPButton');
   const routerAddressInput = document.querySelector('.routerAddressInput');
   const addressText = document.querySelector('.addressText');
   const testnetSelector = document.querySelector('.testnetSelector');
   const matamaskStatusText = document.querySelector('.matamaskStatusText');
+
   const TESTNETCONTRACTADDRESS = {
     'RINBEKY': '979588965099F4DEA3CAd850d67ca3356284591e',
     'GOERLI': 'Dc495507b830E5D1d8C073D4B12D144e76100816',
@@ -42,11 +44,42 @@ router Address => <p class="addressText"></p>
   let ethereum = window.ethereum
   let testnet = undefined
   let routerAddress = undefined
-  sendEthButton.addEventListener('click', () => {
-    console.log(testnet)
+
+  mintTokenButton.addEventListener('click', () => {
     let contractAddress = getContractAddress(testnet)
     let tokenAddress = getTokenAddress(testnet)
-    console.log(contractAddress, tokenAddress)
+    let amount = '4563918244F40000'
+    if ((contractAddress != `0`) && (tokenAddress != '0')) {
+      ethereum
+        .request({
+          method: 'eth_sendTransaction',
+          params: [
+            {
+              from: accounts[0],
+              to: `${tokenAddress}`,
+              value: '0',
+              data: `0x40c10f19000000000000000000000000${accounts[0].slice(2, accounts[0].length)}000000000000000000000000000000000000000000000000${amount}`,
+              gasPrice: '0x27236A47F',
+              gas: '0x3EC78',
+            },
+          ],
+        })
+        .then((txHash) => {
+          console.log(txHash)
+        })
+        .catch((error) => {
+          alert(`Couldn't request web3provider`)
+          console.error
+        })
+    } else if (contractAddress == '0') {
+      alert(`Couldn't match testnet with contract`)
+    } else {
+      alert('999')
+    }
+  });
+  addLPButton.addEventListener('click', () => {
+    let contractAddress = getContractAddress(testnet)
+    let tokenAddress = getTokenAddress(testnet)
     if ((contractAddress != `0`) && (tokenAddress != '0')) {
       ethereum
         .request({
@@ -75,12 +108,41 @@ router Address => <p class="addressText"></p>
       alert('999')
     }
   });
+  approveTokenButton.addEventListener('click', () => {
+    let contractAddress = getContractAddress(testnet)
+    let tokenAddress = getTokenAddress(testnet)
+    if ((contractAddress != `0`) && (tokenAddress != '0')) {
+      ethereum
+        .request({
+          method: 'eth_sendTransaction',
+          params: [
+            {
+              from: accounts[0],
+              to: `${tokenAddress}`,
+              value: '0',
+              data: `0x095ea7b3000000000000000000000000${contractAddress}000000000000000000000000000000000000000000000000F563918244f40000`,
+              gasPrice: '0x27236A47F',
+              gas: '0x3EC78',
+            },
+          ],
+        })
+        .then((txHash) => {
+          console.log(txHash)
+        })
+        .catch((error) => {
+          alert(`Couldn't request web3provider`)
+          console.error
+        })
+    } else if (contractAddress == '0') {
+      alert(`Couldn't match testnet with contract`)
+    } else {
+      alert('999')
+    }
+  });
+
   routerAddressInput.addEventListener('change', (e) => {
     addressText.innerHTML = e.target.value;
     routerAddress = e.target.value
-  });
-  ethereumButton.addEventListener('click', () => {
-    getAccount();
   });
 
   testnetSelector.addEventListener('change', (e) => {
@@ -139,7 +201,7 @@ router Address => <p class="addressText"></p>
         alert('connect error')
         matamaskStatusText.innerHTML = "MetaMask Status : Not Connect"
       }
-    }else{
+    } else {
       console.log('please select network')
     }
   }
