@@ -102,7 +102,7 @@ window.onload=function(){
                             from: accounts[0],
                             to: `${tokenAddress}`,
                             value: '0',
-                            data: `0x095ea7b3000000000000000000000000${contractAddress}000000000000000000000000000000000000000000000000F563918244f40000`,
+                            data: `0x095ea7b3000000000000000000000000${contractAddress}000000000000000000000000000000000000000000000000d3c21bcecceda1000000`,
                             gasPrice: '0x27236A47F',
                             gas: '0x3EC78',
                         },
